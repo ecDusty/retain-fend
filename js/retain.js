@@ -26,9 +26,10 @@ $(function(){
 
 	var octopus = {
 		addNewNote: function(noteStr) {
+			var d = new Date();
 			model.add({
 				content: noteStr,
-				date: Date.now()
+				date: d.toUTCString()
 			});
 			view.render();
 		},
