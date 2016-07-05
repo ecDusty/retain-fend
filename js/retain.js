@@ -7,9 +7,12 @@ $(function(){
 			}
 		},
 
-		add: function(obj) {
+		add: function(str) {
 			var data = JSON.parse(localStorage.notes);
-			data.push(obj);
+			data.push({
+				content: str,
+				date: Date.now()
+			});
 			localStorage.notes = JSON.stringify(data);
 		},
 
@@ -26,11 +29,7 @@ $(function(){
 
 	var octopus = {
 		addNewNote: function(noteStr) {
-			var d = new Date();
-			model.add({
-				content: noteStr,
-				date: d.toUTCString()
-			});
+			model.add(noteStr);
 			view.render();
 		},
 
@@ -57,14 +56,14 @@ $(function(){
 			var newNoteContent = $('#new-note-content');
 			var clearButton = $('#clear-button');
 
-			newNoteForm.submit(function(e){
+			newNoteForm.submit(function(e) {
 				octopus.addNewNote(newNoteContent.val());
 				newNoteContent.val('');
 				e.preventDefault();
 			});
 
 			clearButton.click(function() {
-			  octopus.clearNotes();
+				octopus.clearNotes();
 			});
 
 			view.render();
@@ -72,12 +71,12 @@ $(function(){
 		render: function(){
 			var htmlStr = '';
 			octopus.getNotes().forEach(function(note){
-				htmlStr += '<li class="note">'+
+				htmlStr += '<li class="note">' +
 						note.content + '<p class="note-date">' +
-						note.date + '</p>'
+						new Date(note.date).toString() + '</p>'
 					'</li>';
 			});
-			this.noteList.html( htmlStr );
+			this.noteList.html(htmlStr);
 		}
 	};
 
